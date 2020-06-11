@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#main-div {
+    background-color: #353535;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#header {
+    color: #eaeaea;
+    font-family: 'Spirax', cursive;
+    text-shadow: 0 0 5px #eaeaea;
+}
+
+canvas {
+    background-color: #9a9a9a;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #292929;
+}
+
+#controls {
+    background-color: #0d085c;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #02001f;
+    color: #eaeaea;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.1rem;
+    padding: 5px;
+}
+
+.control-item {
+    margin: 2px;
+}
+
+.control input[type=color]{
+    border-radius: 5px;
+    max-width: 25%;
+    padding: 0;
+}
+
+#controls .label {
+    font-family: 'Spirax', cursive;
+    font-size: 1.5rem;
+    margin: 0;
+    /* padding: 5px; */
+    text-align: center;
+}
+
+.control input{
+    width: 100%;
+}
+
