@@ -1,9 +1,10 @@
 class Spirograph {
-    constructor(ctx, startx, starty, radius1, radius2, theta, color1, color2, color3, color4){
+    constructor(ctx, startx, starty, radius1, radius2, theta, scalar, color1, color2, color3, color4){
         this.ctx = ctx;
         this.radius1 = radius1;
         this.radius2 = radius2;
 
+        this.strokeColor = color1;
         this.strokeColor1 = color1;
         this.strokeColor2 = color2;
         this.strokeColor3 = color3;
@@ -17,33 +18,26 @@ class Spirograph {
 
         this.angle = 0;
         this.theta = theta / 100;
-
-        // Epicycloid
-        this.x = ((this.radius1 + this.radius2) * Math.cos(this.angle)) - (this.radius2 * Math.cos((((this.radius1 + this.radius2) / this.radius2)*this.angle)))
-        this.y = ((this.radius1 + this.radius2) * Math.sin(this.angle)) - (this.radius2 * Math.cos((((this.radius1 + this.radius2) / this.radius2)*this.angle)))
-
-
-        // Hypocycloid
-        // this.x = this.startx + (this.radius2 - this.radius1) * Math.cos(this.angle) + 20 * Math.cos(((this.radius2-this.radius1)/this.radius1)*this.angle)
-        // this.y = this.starty + (this.radius2 - this.radius1) * Math.sin(this.angle) - 20 * Math.sin(((this.radius2-this.radius1)/this.radius1)*this.angle)
+        this.scalar = scalar;
+        
+   
+        // Epitrochoid
+        this.x = this.startx + (this.radius2 - this.radius1) * Math.cos(this.angle) + this.scalar * Math.cos(((this.radius2-this.radius1)/this.radius1)*this.angle)
+        this.y = this.starty + (this.radius2 - this.radius1) * Math.sin(this.angle) - this.scalar * Math.sin(((this.radius2-this.radius1)/this.radius1)*this.angle)
     }
     
     /**
      * Update the spiro's angle, x and y coords
      */
     update(){
-        this.angle = (this.angle + this.theta) % (2 * Math.PI)
+        this.angle = this.angle + this.theta;
         
         this.prevx = this.x;
         this.prevy = this.y
 
-        //Epicycloid
-        this.x = ((this.radius1 + this.radius2) * Math.cos(this.angle)) - (this.radius2 * Math.cos((((this.radius1 + this.radius2) / this.radius2)*this.angle)))
-        this.y = ((this.radius1 + this.radius2) * Math.sin(this.angle)) - (this.radius2 * Math.cos((((this.radius1 + this.radius2) / this.radius2)*this.angle)))
-
-        // Hypocycloid
-        // this.x = this.startx + (this.radius2 - this.radius1) * Math.cos(this.angle) + 20 * Math.cos(((this.radius2-this.radius1)/this.radius1)*this.angle)
-        // this.y = this.starty + (this.radius2 - this.radius1) * Math.sin(this.angle) - 20 * Math.sin(((this.radius2-this.radius1)/this.radius1)*this.angle)
+        // Epitrochoid
+        this.x = this.startx + (this.radius2 - this.radius1) * Math.cos(this.angle) + this.scalar * Math.cos(((this.radius2-this.radius1)/this.radius1)*this.angle)
+        this.y = this.starty + (this.radius2 - this.radius1) * Math.sin(this.angle) - this.scalar * Math.sin(((this.radius2-this.radius1)/this.radius1)*this.angle)
         
     }
     
@@ -61,6 +55,8 @@ class Spirograph {
         } else if (Math.cos(this.angle) > 0 && Math.sin(this.angle) < 0) {
             this.strokeColor = this.strokeColor4;
         }
+        
+      // console.log('color', this.strokeColor)
         return this.strokeColor
     }
 
@@ -78,9 +74,9 @@ class Spirograph {
     }
 }
 
-
 let canvas, centerx, centery, container, 
     count, ctx, frameRequest, spiro, steps;
+
 
 /** 
 * Return an object containing spirograph parameters from DOM inputs
@@ -93,33 +89,39 @@ function getDomData(){
         radius1: elems[1].value,
         radius2: elems[2].value,
         theta  : elems[3].value,
-        color1 : elems[4].value,
-        color2 : elems[5].value,
-        color3 : elems[6].value,
-        color4 : elems[7].value,
+        scalar : elems[4].value,
+        color1 : elems[5].value,
+        color2 : elems[6].value,
+        color3 : elems[7].value,
+        color4 : elems[8].value,
     }
 
     return domData
 }
 
 /**
- * Instantiate Spirograph() object
+ * Setup canvas and instantiate Spirograph() object
  */
 function init(){
     let domData = getDomData(); // get Spiro arguments from DOM inputs
 
     canvas = document.querySelector('canvas');
-
-    canvas.height = canvas.parentElement.offsetHeight;
-    canvas.width = canvas.parentElement.offsetHeight;
     
+    canvas.height = canvas.parentElement.offsetHeight;
+    canvas.width = canvas.parentElement.offsetWidth;
+    
+    if(window.innerWidth < 991.98){
+      canvas.height = window.innerHeight * .9;
+      canvas.width = window.innerWidth * .8;
+    }
+  
     // find center of canvas
     centerx = canvas.width / 2;
-    centery = canvas.height / 2
+    centery = canvas.height / 2;
     
     ctx = canvas.getContext('2d');
 
-
+    // Instantiate spirograph class
     spiro = new Spirograph(
         ctx,
         centerx,
@@ -127,20 +129,29 @@ function init(){
         domData.radius1,
         domData.radius2,
         domData.theta,
+        domData.scalar,
         domData.color1,
         domData.color2,
         domData.color3,
         domData.color4,
     );
     
-    steps = parseInt(3.14/spiro.theta * (spiro.radius1 / 10)) // determines how long the spiro runs. I don't understand where this number is coming from. lol
+    
+    steps = ((spiro.radius1 + spiro.radius2) * (2 *Math.PI)) 
+            / Math.abs(spiro.radius1 - spiro.radius2) + spiro.scalar//(Math.abs(spiro.radius1 - spiro.radius2) * Math.PI) * (spiro.scalar)
 }
 
+/**
+* Main animation function. Called every frame
+* Updates spiro numbers and redraws
+*/
 function draw(){
+    
+    console.log('\nangle', spiro.angle * 180 / (2*Math.PI))
+    let deg = spiro.angle * 180 / (2 * Math.PI)
 
-    console.log(spiro)
-
-    if(spiro.angle < steps){
+    console.log('steps', steps)
+    if(deg < steps){
         spiro.update()
         spiro.draw()
 
@@ -150,6 +161,7 @@ function draw(){
     }
 }
 
+// Setup canvas
 init()
 
 let startButton = document.querySelector('#submit');
@@ -157,6 +169,10 @@ let pauseButton = document.querySelector('#pause');
 let clearButton = document.querySelector('#clear');
 let bgColorInput = document.querySelector('#bg-color');
 
+
+/**
+* Begin new animation
+*/
 startButton.addEventListener('click', () => {
     // end previous animation
     // spiro = null;
@@ -166,17 +182,32 @@ startButton.addEventListener('click', () => {
     frameRequest = window.requestAnimationFrame(draw);
 })
 
+/**
+* pause current spiro animation
+*/
 pauseButton.addEventListener('click', () => {
     window.cancelAnimationFrame(frameRequest)
 })
 
+/**
+* Button to clear canvas and erase current spiro
+*/
 clearButton.addEventListener('click', () => {
     window.cancelAnimationFrame(frameRequest)
     spiro = null;
     init();
 })
 
+/**
+* Change canvas color on color input
+*/
 bgColorInput.addEventListener('input', () => {
-    
     canvas.style.backgroundColor = bgColorInput.value;
+})
+
+/**
+* Resize and reset canvas on window resize
+*/
+window.addEventListener('resize', () => {
+  init();
 })

@@ -11,96 +11,104 @@
     <title>Spiro</title>
 </head>
 <body>
-    <div id="main-div" class="d-flex flex-column justify-content-center">
+    <div id="main-div" class="d-flex flex-column align-items-center">
         <div class="row">
-            <div class="col col-4 offset-4 text-center mt-2">
+            <div class="col col-12 text-center mt-2">
                 <h1 id="header">Spirograph</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col col-5 offset-1 d-flex flex-column" id="controls">
+            <div class="col col-lg-5 offset-lg-1 col-12 d-flex flex-column align-items-center" id="controls">
                 
                 <div class="label">Settings:</div>
                 <div class="row">
                     <!-- SETTINGS LEFT SIDE -->
-                    <div class="col col-6">
+                    <div class="col col-12 d-flex flex-column align-items-center">
                         <!-- BACKGROUND COLOR -->
                         <div class="row control-item">
-                            <div class="col col-6 d-flex justify-content-end">Background:</div> 
-                            <div class="control col col-5 d-flex justify-content-center">
-                                <input type="color" id="bg-color" value="#eaeaea">
+                            <div class="col col-6 d-flex justify-content-center">Background:</div> 
+                            <div class="control col col-6 d-flex justify-content-center">
+                                <input type="color" id="bg-color" value="#0A001F">
                             </div>
                         </div>
         
                         <!-- RADIUS 1 -->
                         <div class="row control-item">
-                            <div class="col col-5 d-flex justify-content-end">Radius 1:</div> 
-                            <div class="control col  col-5 offset-1 d-flex justify-content-center">
-                                <input type="range" min="100" max="300" value="150" id="radius-1">
+                            <div class="col col-6 d-flex justify-content-center">Radius 1:</div> 
+                            <div class="control col col-6 d-flex justify-content-center">
+                                <input type="range" min="50" max="150" value="133" id="radius-1">
                             </div>
                         </div>
         
                         <!-- RADIUS 2 -->
                         <div class="row control-item">
-                            <div class="col col-5 d-flex justify-content-end">Radius 2:</div> 
-                            <div class="control col  col-5 offset-1 d-flex justify-content-center">
-                                <input type="range" min="100" max="300" value="210" id="radius-2">
+                            <div class="col col-6 d-flex justify-content-center">Radius 2:</div> 
+                            <div class="control col col-6 d-flex justify-content-center">
+                                <input type="range" min="50" max="150" value="89" id="radius-2">
                             </div>
                         </div>
         
                         <!-- THETA -->
                         <div class="row control-item">
-                            <div class="col col-5 d-flex justify-content-end">Theta:</div> 
-                            <div class="control col col-5 offset-1 d-flex justify-content-center">
-                                <input type="range" min="1" max="10" value="5" id="theta">
+                            <div class="col col-6 d-flex justify-content-center">Theta:</div> 
+                            <div class="control col col-6 d-flex justify-content-center">
+                                <input type="range" min="10" max="30" value="30" id="theta">
+                            </div>
+                        </div>
+                      
+                        <!-- SCALAR -->
+                        <div class="row control-item">
+                            <div class="col col-6 d-flex justify-content-center">Scalar:</div> 
+                            <div class="control col col-6 d-flex justify-content-center">
+                                <input type="range" min="10" max="150" value="100" id="scalar">
                             </div>
                         </div>
         
                         <!-- color 1 -->
                         <div class="label">Line:</div>
                         <div class="row control-item">
-                            <div class="col col-5 d-flex justify-content-end">Color 1:</div> 
-                            <div class="control col  col-5 offset-1 d-flex justify-content-center">
+                            <div class="col col-6 d-flex justify-content-center">Color 1:</div> 
+                            <div class="control col  col-6 d-flex justify-content-center">
                                 <input type="color" id="stroke-color1" value="#BA0425"/>
                             </div>
                         </div>
         
                         <div class="row control-item">
-                            <div class="col col-5 d-flex justify-content-end">Color 2:</div> 
-                            <div class="control col  col-5 offset-1 d-flex justify-content-center">
+                            <div class="col col-6 d-flex justify-content-center">Color 2:</div> 
+                            <div class="control col  col-6 d-flex justify-content-center">
                                 <input type="color" id="stroke-color2" value="#C40487">
                             </div>
                         </div>
         
                         <div class="row control-item">
-                            <div class="col col-5 d-flex justify-content-end">Color 3:</div> 
-                            <div class="control col  col-5 offset-1 d-flex justify-content-center">
+                            <div class="col col-6 d-flex justify-content-center">Color 3:</div> 
+                            <div class="control col  col-6 d-flex justify-content-center">
                                 <input type="color" id="stroke-color3" value="#7D04C4">
                             </div>
                         </div>
         
                         <div class="row control-item">
-                            <div class="col col-5 d-flex justify-content-end">Color 4:</div> 
-                            <div class="control col  col-5 offset-1 d-flex justify-content-center">
+                            <div class="col col-6 d-flex justify-content-center">Color 4:</div> 
+                            <div class="control col  col-6 d-flex justify-content-center">
                                 <input type="color" id="stroke-color4" value="#4404BA">
                             </div>
                         </div>
         
-                        <div class="row control-item">
-                            <div class="col col-4 mt-3 d-flex justify-content-end">
+                        <div class="row control-item mt-3 mb-3 no-gutters" id="buttons">
+                            <div class="col col-4 text-center">
                                 <button class="btn btn-sm btn-success" id="submit">Draw</button>
                             </div>
-                            <div class="col col-4 text-center mt-3">
+                            <div class="col col-4 text-center">
                                 <button class="btn btn-sm btn-warning" id="pause">Pause</button>
                             </div>
-                            <div class="col col-4 text-center mt-3 d-flex justify-content-start">
+                            <div class="col col-4 text-center">
                                 <button class="btn btn-sm btn-danger" id="clear">Clear</button>
                             </div>
                         </div>
 
                     </div>
                     <!-- SETTINGS RIGHT SIDE -->
-                    <div class="col col-6">
+                    <!-- <div class="col col-6">
                         <div class="row control-item">
                             <div class="col col-6 d-flex justify-content-end">Hypocycloid:</div> 
                             <div class="control col col-5 d-flex justify-content-center">
@@ -113,11 +121,11 @@
                                 <input type="radio" id="pattern" value="epicycloid">
                             </div>
                         </div>
-                    </div>    
+                    </div>     -->
                 </div>
             </div>
             
-            <div id="spirograph" class="col col-5 d-flex">
+            <div id="spirograph" class="col col-lg-5 col-12 d-flex justify-content-center">
                 <canvas>
                     <!-- Draw spirograph with JS here... -->
                 </canvas>
