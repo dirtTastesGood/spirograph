@@ -137,8 +137,7 @@ function init(){
     );
     
     
-    steps = ((spiro.radius1 + spiro.radius2) * (2 *Math.PI)) 
-            / Math.abs(spiro.radius1 - spiro.radius2) + spiro.scalar//(Math.abs(spiro.radius1 - spiro.radius2) * Math.PI) * (spiro.scalar)
+    steps = (Math.abs(spiro.radius1 - spiro.radius2) * (24 * Math.PI))  //(Math.abs(spiro.radius1 - spiro.radius2) * Math.PI) * (spiro.scalar)
 }
 
 /**
@@ -146,7 +145,7 @@ function init(){
 * Updates spiro numbers and redraws
 */
 function draw(){
-    
+    console.log(spiro.radius1, spiro.radius2, spiro.scalar)
     console.log('\nangle', spiro.angle * 180 / (2*Math.PI))
     let deg = spiro.angle * 180 / (2 * Math.PI)
 
